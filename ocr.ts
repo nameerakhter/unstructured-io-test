@@ -8,9 +8,7 @@ const unstructuredClient = new UnstructuredClient({
   },
 });
 
-// Source: https://github.com/Unstructured-IO/unstructured-ingest/blob/main/example-docs/img/english-and-korean.png
-
-const filename = "english-and-korean.png";
+const filename = "college-id.png";
 if (!fs.existsSync(filename)) {
   throw new Error(`File not found: ${filename}`);
 }
@@ -24,7 +22,7 @@ unstructuredClient.general
         fileName: filename,
       },
       strategy: Strategy.OcrOnly,
-      ocrLanguages: ["kor"],
+      ocrLanguages: ["eng"],
     },
   })
   .then((res: unknown) => {
