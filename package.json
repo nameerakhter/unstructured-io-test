@@ -7,7 +7,7 @@
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "5"
   },
   "dependencies": {
     "unstructured-client": "0.30.3"

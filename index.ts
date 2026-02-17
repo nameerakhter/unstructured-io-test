@@ -1,52 +1,40 @@
 import { UnstructuredClient } from "unstructured-client";
-import type { PartitionResponse } from "unstructured-client/sdk/models/operations";
 import { Strategy } from "unstructured-client/sdk/models/shared";
 import * as fs from "fs";
 
-const key = process.env.UNSTRUCTURED_API_KEY;
-const url = process.env.UNSTRUCTURED_API_URL;
-
-const client = new UnstructuredClient({
-  serverURL: url,
+const unstructuredClient = new UnstructuredClient({
   security: {
-    apiKeyAuth: key,
+    apiKeyAuth: process.env.UNSTRUCTURED_API_KEY,
   },
 });
 
 const filename = "certificate-UK22SW0200000010.pdf";
 const data = fs.readFileSync(filename);
 
-client.general
+unstructuredClient.general
   .partition({
     partitionParameters: {
       files: {
         content: data,
         fileName: filename,
       },
-      strategy: Strategy.HiRes,
-      splitPdfPage: true,
-      splitPdfAllowFailed: true,
-      splitPdfConcurrencyLevel: 15,
-      languages: ["hi"],
+      strategy: Strategy.Auto,
     },
   })
-  .then((res: PartitionResponse) => {
-    const elements = res.elements ?? [];
-    if (!elements.length) {
-      console.log("Empty response:", res);
-      return;
+  .then((res: unknown) => {
+    if (
+      res &&
+      typeof res === "object" &&
+      "statusCode" in res &&
+      res.statusCode == 200
+    ) {
+      console.log((res as any).elements);
     }
-
-    console.log(elements[0]);
-
-    const jsonElements = JSON.stringify(res, null, 2);
-    fs.writeFileSync("output.json", jsonElements);
+    console.log("Response ", res);
+    const JSONResponse = JSON.stringify(res, null, 2);
+    fs.writeFileSync("output.json", JSONResponse);
   })
   .catch((e) => {
-    if (e.statusCode) {
-      console.log(e.statusCode);
-      console.log(e.body);
-    } else {
-      console.log(e);
-    }
+    console.log(e.statusCode);
+    console.log(e.body);
   });
