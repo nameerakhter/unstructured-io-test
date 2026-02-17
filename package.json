@@ -1,0 +1,15 @@
+{
+  "name": "unstructured-io",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "unstructured-client": "^0.30.3"
+  }
+}
