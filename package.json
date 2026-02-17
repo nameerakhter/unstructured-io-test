@@ -10,6 +10,6 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "unstructured-client": "^0.30.3"
+    "unstructured-client": "0.30.3"
   }
 }
